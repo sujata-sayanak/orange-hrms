@@ -14,7 +14,7 @@ class AdminPage {
         this.password = page.locator(`(//label[text()='Password']//following::input[@type='password'])[1]`)
         this.confirmPassword = page.locator(`(//label[text()='Password']//following::input[@type='password'])[2]`)
         this.saveButton = page.getByRole('button', { name: 'Save' })
-        this.searchButton = page.locator(`//button[text()=' Search ']`)
+        this.searchButton = page.getByRole('button', {name: ' Search '} )//page.locator(`//button[text()=' Search ']`)
         this.searchUsername = page.locator(`(//label[text()='Username']//following::input[@class='oxd-input oxd-input--active'])[1]`);
     }
 
@@ -83,7 +83,8 @@ class AdminPage {
 
     async validateSearchedUserDetails(user, role, empName, status) {
         const cellLocator = `//div[@class='oxd-table-body']//div[1]//div[@role='cell']`
-        await expect(this.page.locator(`${cellLocator}//div[text()='${role}']`).first()).toBeVisible();
+        await expect(this.page.getByRole('cell').filter({ has : this.page.getByText(role)}).first()).toBeVisible()
+       // await expect(this.page.locator(`${cellLocator}//div[text()='${role}']`).first()).toBeVisible();
         await expect(this.page.locator(`${cellLocator}//div[text()='${status}']`).first()).toBeVisible();
         await expect(this.page.getByText(empName).first()).toBeVisible();
         await expect(this.page.getByText(user).first()).toBeVisible();
